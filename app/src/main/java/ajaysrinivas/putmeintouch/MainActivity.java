@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     ArrayList<String> feedsList;
     GraphResponse lastResponse = null;
     View ftView;
+    SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ftView = (View) findViewById(R.id.loadingBar);
+//        ftView = (View) findViewById(R.id.loadingBar);
         feedList = (ListView) findViewById(R.id.feedList);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 startActivity(new Intent(MainActivity.this, UploadActivity.class));
+                finish();
             }
         });
 
@@ -82,6 +85,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                feedsList.clear();
+                lastResponse = null;
+                updateFeed();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
 //        Bundle parameters = new Bundle();
 //        parameters.putString("message", "First from PMIT App and test App app and yureka");
 //        parameters.putString("access_token", AccessToken.getCurrentAccessToken().getToken());
@@ -93,7 +107,11 @@ public class MainActivity extends AppCompatActivity
 //        });
 //        request.executeAsync();
 
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Updating Feed...");
+        progressDialog.show();
         updateFeed();
+        progressDialog.dismiss();
 
         feedList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -106,8 +124,8 @@ public class MainActivity extends AppCompatActivity
 
                 if (absListView.getLastVisiblePosition() == totalItemCount - 1) {
                     if (lastResponse != null) {
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        ftView = inflater.inflate(R.layout.feed_update_dialog, null);
+//                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                        ftView = inflater.inflate(R.layout.feed_update_dialog, null);
                         GraphRequest newRequest = lastResponse.getRequestForPagedResults(GraphResponse.PagingDirection.NEXT);
                         if (newRequest != null) {
                             newRequest.setCallback(new GraphRequest.Callback() {
@@ -123,12 +141,12 @@ public class MainActivity extends AppCompatActivity
                                         }
                                         arrayAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
-                                        e.printStackTrace();
+                                        Toast.makeText(getApplicationContext(), "NO MORE FEED", Toast.LENGTH_SHORT).show();
                                     }
-                                    feedList.removeFooterView(ftView);
+//                                    feedList.removeFooterView(ftView);
                                 }
                             });
-                            feedList.addFooterView(ftView);
+//                            feedList.addFooterView(ftView);
                             newRequest.executeAsync();
                         }
                     }
@@ -140,7 +158,7 @@ public class MainActivity extends AppCompatActivity
 
     public void updateFeed() {
         feedsList = new ArrayList<String>();
-        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, feedsList);
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.listitem1, feedsList);
         feedList.setAdapter(arrayAdapter);
 
 
@@ -206,6 +224,8 @@ public class MainActivity extends AppCompatActivity
             ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Refreshing Feed...");
             progressDialog.show();
+            feedsList.clear();
+            lastResponse = null;
             updateFeed();
             progressDialog.dismiss();
         }
