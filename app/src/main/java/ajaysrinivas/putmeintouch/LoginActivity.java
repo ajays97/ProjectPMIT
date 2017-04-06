@@ -21,6 +21,12 @@ public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -33,9 +39,8 @@ public class LoginActivity extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null) {
-//            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+            //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            finish();
         }
 
         callbackManager = CallbackManager.Factory.create();
