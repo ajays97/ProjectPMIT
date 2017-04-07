@@ -37,7 +37,6 @@ public class UploadActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Message Empty", Toast.LENGTH_SHORT).show();
                 else {
                     new Uploader().execute(message.getText().toString());
-                    startActivity(new Intent(UploadActivity.this, MainActivity.class));
                 }
             }
         });
@@ -67,6 +66,7 @@ public class UploadActivity extends AppCompatActivity {
             progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "Successfully Posted", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(UploadActivity.this, MainActivity.class));
+            finish();
         }
 
         @Override

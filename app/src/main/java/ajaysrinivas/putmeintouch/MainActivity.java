@@ -262,10 +262,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
-
 }

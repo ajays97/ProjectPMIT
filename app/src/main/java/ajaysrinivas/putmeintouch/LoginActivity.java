@@ -3,6 +3,7 @@ package ajaysrinivas.putmeintouch;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.FacebookCallback;
@@ -21,12 +22,6 @@ public class LoginActivity extends AppCompatActivity {
     CallbackManager callbackManager;
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        finish();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -34,12 +29,12 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton = (LoginButton) findViewById(R.id.buttonLogin);
 
-//      loginButton.setReadPermissions(Arrays.asList("public_profile"));
+//        loginButton.setReadPermissions(Arrays.asList("public_profile"));
         loginButton.setPublishPermissions("publish_actions");
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null) {
-            //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+//            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
 
@@ -48,10 +43,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
-
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();
-
             }
 
             @Override
