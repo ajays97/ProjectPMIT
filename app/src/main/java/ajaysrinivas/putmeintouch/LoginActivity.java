@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         if (accessToken != null) {
 //            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
         }
 
         callbackManager = CallbackManager.Factory.create();
@@ -50,11 +51,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 // App code
+                finish();
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
+                finish();
             }
 
         });

@@ -3,6 +3,7 @@ package ajaysrinivas.putmeintouch;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,7 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -44,7 +46,9 @@ import java.util.ArrayList;
 //PMITG Group ID = 723621821179730
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ConnectivityReceiver.ConnectivityReceiverListener {
+
+
 
     ListView feedList;
     String feeds = "";
@@ -107,12 +111,6 @@ public class MainActivity extends AppCompatActivity
 //        });
 //        request.executeAsync();
 
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Updating Feed...");
-        progressDialog.show();
-        updateFeed();
-        progressDialog.dismiss();
-
         feedList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
@@ -154,6 +152,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        updateFeed();
+
     }
 
     public void updateFeed() {
@@ -161,14 +161,12 @@ public class MainActivity extends AppCompatActivity
         arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.listitem1, feedsList);
         feedList.setAdapter(arrayAdapter);
 
-
         Bundle parameters = new Bundle();
         parameters.putString("limit", "15");
         GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/1426285350749606/feed", parameters, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
                 lastResponse = response;
-                Log.v("New Output: ", lastResponse.toString());
                 JSONObject mainObj = response.getJSONObject();
                 try {
                     JSONArray jsonArray = mainObj.getJSONArray("data");
@@ -179,15 +177,41 @@ public class MainActivity extends AppCompatActivity
                     arrayAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (NullPointerException e) {
+                    Toast.makeText(getApplicationContext(), "Please connect to internet", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
 
             }
         });
         request.setParameters(parameters);
         request.executeAsync();
+    }
+
+    private void showConnectivity(boolean isConnected) {
+        String networkStatus;
+        int color;
+        if (isConnected) {
+            networkStatus = "Connected to internet.";
+            color = Color.WHITE;
+        } else {
+            networkStatus = "Please connect to internet.";
+            color = Color.RED;
+        }
+
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.fab), networkStatus, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
 
     }
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showConnectivity(isConnected);
+    }
 
     @Override
     public void onBackPressed() {
@@ -262,4 +286,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApplicationConnectivity.getmInstance().setConnectivityListener(this);
+    }
 }
