@@ -3,6 +3,8 @@ package ajaysrinivas.putmeintouch;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -65,6 +67,15 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        PostIdHelper db = new PostIdHelper(this);
+        getApplicationContext().deleteDatabase("postIdManager");
+
+        Log.d("Insert: ", "Inserting");
+        db.addId(new PostID("129", "Ajay Srinivas"));
+
+        Log.d("Read: ", "Reading");
+        Log.d("Value: ",db.getPostId("129"));
 
 //        ftView = (View) findViewById(R.id.loadingBar);
         feedList = (ListView) findViewById(R.id.feedList);
@@ -220,6 +231,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+
         }
     }
 

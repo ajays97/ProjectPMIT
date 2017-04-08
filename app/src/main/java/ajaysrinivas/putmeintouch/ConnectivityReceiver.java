@@ -14,6 +14,10 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     public static ConnectivityReceiverListener connectivityReceiverListener;
 
+    public ConnectivityReceiver(){
+        super();
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -35,6 +39,5 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     public interface ConnectivityReceiverListener {
         void onNetworkConnectionChanged(boolean isConnected);
     }
-
 
 }
