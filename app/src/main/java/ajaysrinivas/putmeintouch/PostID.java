@@ -6,13 +6,14 @@ package ajaysrinivas.putmeintouch;
 
 public class PostID {
 
-    String id, postid;
+    String postid;
+    int id;
 
     public PostID() {
 
     }
 
-    public PostID(String id, String postid) {
+    public PostID(int id, String postid) {
         this.id = id;
         this.postid = postid;
     }
@@ -25,7 +26,7 @@ public class PostID {
         this.postid = postid;
     }
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 

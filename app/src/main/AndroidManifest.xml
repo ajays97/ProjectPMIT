@@ -40,17 +40,17 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".UploadActivity"></activity>
+        <activity android:name=".UploadActivity" />
 
         <receiver
             android:name=".ConnectivityReceiver"
             android:enabled="true">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
-
         </receiver>
 
+        <activity android:name=".FeedActivity"></activity>
     </application>
 
 </manifest>

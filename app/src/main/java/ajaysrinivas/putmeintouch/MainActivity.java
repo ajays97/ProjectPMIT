@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -69,13 +70,14 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         PostIdHelper db = new PostIdHelper(this);
-        getApplicationContext().deleteDatabase("postIdManager");
+        getApplicationContext().deleteDatabase("postIdManager.db");
 
-        Log.d("Insert: ", "Inserting");
-        db.addId(new PostID("129", "Ajay Srinivas"));
-
-        Log.d("Read: ", "Reading");
-        Log.d("Value: ",db.getPostId("129"));
+//        Log.d("Insert: ", "Inserting");
+//        db.addId(new PostID(1, "Ajay S"));
+//
+//
+//        Log.d("Read: ", "Reading");
+//        Log.d("Value: ",db.getPostId(1));
 
 //        ftView = (View) findViewById(R.id.loadingBar);
         feedList = (ListView) findViewById(R.id.feedList);
@@ -108,6 +110,25 @@ public class MainActivity extends AppCompatActivity
                 lastResponse = null;
                 updateFeed();
                 refreshLayout.setRefreshing(false);
+            }
+        });
+
+        feedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+
+                String temp = feedList.getItemAtPosition(position).toString();
+                StringBuilder builder = new StringBuilder();
+                builder.append(temp);
+                builder.reverse();
+                temp = builder.toString().split("\n")[0];
+                builder = new StringBuilder();
+                builder.append(temp);
+                temp = builder.reverse().toString();
+
+                Intent i = new Intent(MainActivity.this, FeedActivity.class);
+                i.putExtra(Intent.EXTRA_TEXT, temp);
+                startActivity(i);
             }
         });
 
@@ -146,7 +167,7 @@ public class MainActivity extends AppCompatActivity
                                         JSONArray jsonArray = mainObj.getJSONArray("data");
                                         for (int i = 0; i < 15; i++) {
                                             JSONObject respObj = jsonArray.getJSONObject(i);
-                                            arrayAdapter.add(respObj.getString("message"));
+                                            arrayAdapter.add(respObj.getString("message") + "\n " + respObj.getString("id"));
                                         }
                                         arrayAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
@@ -162,6 +183,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
+
 
         updateFeed();
 
@@ -183,7 +205,7 @@ public class MainActivity extends AppCompatActivity
                     JSONArray jsonArray = mainObj.getJSONArray("data");
                     for (int i = 0; i < 15; i++) {
                         JSONObject respObj = jsonArray.getJSONObject(i);
-                        arrayAdapter.add(respObj.getString("message"));
+                        arrayAdapter.add(respObj.getString("message") + "\n " + respObj.getString("id"));
                     }
                     arrayAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {

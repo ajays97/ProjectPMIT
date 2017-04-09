@@ -13,10 +13,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class PostIdHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "postIdManager";
-    private static final String TABLE_NAME = "postid";
+    private static final String DATABASE_NAME = "postIdManager.db";
+    private static final String TABLE_POSTID = "postid";
 
-    private static final String KEY_POSITION = "position";
     private static final String KEY_ID = "id";
     private static final String KEY_POSTID = "post_id";
 
@@ -27,15 +26,15 @@ public class PostIdHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_POSTID);
 
-        String CREATE_POSTID_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + KEY_ID + " TEXT PRIMARY KEY, "+ KEY_POSTID + " TEXT)";
+        String CREATE_POSTID_TABLE = "CREATE TABLE " + TABLE_POSTID + "(" + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_POSTID + " TEXT)";
         sqLiteDatabase.execSQL(CREATE_POSTID_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_POSTID);
         onCreate(sqLiteDatabase);
     }
 
@@ -48,14 +47,16 @@ public class PostIdHelper extends SQLiteOpenHelper {
 //        db.insert(TABLE_NAME, null, values);
 //        db.close();
 
-        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES(" + "\'" + postID.getId() + "\'," + "\'" + postID.getPostid() + "\');");
+        db.execSQL("INSERT INTO " + TABLE_POSTID + " VALUES(" + "\'" + postID.getId() + "\'," + "\'" + postID.getPostid() + "\');");
+        db.close();
     }
 
-    public String getPostId(String position){
+    public String getPostId(int position) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE id='" + position + "'", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_POSTID + " WHERE id=" + position, null);
         cursor.moveToFirst();
+        db.close();
         return cursor.getString(1);
     }
 
