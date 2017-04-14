@@ -301,6 +301,8 @@ public class MainActivity extends AppCompatActivity
             lastResponse = null;
             updateFeed();
             progressDialog.dismiss();
+        }else if(id == R.id.mMainActivity2){
+            startActivity(new Intent(MainActivity.this, Main2Activity.class));
         }
 
         return super.onOptionsItemSelected(item);

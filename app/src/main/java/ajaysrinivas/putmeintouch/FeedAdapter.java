@@ -15,10 +15,13 @@ import android.widget.TextView;
  * Created by Ajay Srinivas on 4/14/2017.
  */
 
-public class FeedAdapter extends ArrayAdapter<String> {
+public class FeedAdapter extends ArrayAdapter<Post> {
 
-    public FeedAdapter(@NonNull Context context, String[] feed) {
+    Post[] feed = null;
+
+    public FeedAdapter(@NonNull Context context, Post[] feed) {
         super(context, R.layout.feed_row, feed);
+        this.feed = feed;
     }
 
     @NonNull
@@ -28,13 +31,15 @@ public class FeedAdapter extends ArrayAdapter<String> {
         LayoutInflater feedInflater = LayoutInflater.from(getContext());
         View customView = feedInflater.inflate(R.layout.feed_row, parent, false);
 
-        String description = getItem(position);
+        Post post = feed[position];
 
         TextView feed_description = (TextView) customView.findViewById(R.id.tvDescription);
         TextView feed_creator = (TextView) customView.findViewById(R.id.tvcreator);
         TextView feed_postid = (TextView) customView.findViewById(R.id.tvpostid);
 
-        feed_description.setText(description);
+        feed_description.setText(post.description);
+        feed_creator.setText(post.creator);
+        feed_postid.setText(post.post_id);
 
         return customView;
 
