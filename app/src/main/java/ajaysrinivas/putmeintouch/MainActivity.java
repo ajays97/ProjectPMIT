@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity
     GraphResponse lastResponse = null;
     View ftView;
     SwipeRefreshLayout refreshLayout;
+    SwipeRefreshLayout.OnRefreshListener refreshListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +69,21 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+/*
 
         PostIdHelper db = new PostIdHelper(this);
         getApplicationContext().deleteDatabase("postIdManager.db");
 
-//        Log.d("Insert: ", "Inserting");
-//        db.addId(new PostID(1, "Ajay S"));
-//
-//
-//        Log.d("Read: ", "Reading");
-//        Log.d("Value: ",db.getPostId(1));
+        Log.d("Insert: ", "Inserting");
+        db.addId(new PostID(1, "Ajay S"));
 
-//        ftView = (View) findViewById(R.id.loadingBar);
+
+        Log.d("Read: ", "Reading");
+        Log.d("Value: ",db.getPostId(1));
+
+        ftView = (View) findViewById(R.id.loadingBar);
+*/
+
         feedList = (ListView) findViewById(R.id.feedList);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -103,6 +107,16 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refreshLayout);
+        refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                feedsList.clear();
+                lastResponse = null;
+                updateFeed();
+                refreshLayout.setRefreshing(false);
+            }
+        };
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -196,6 +210,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle parameters = new Bundle();
         parameters.putString("limit", "15");
+        parameters.putString("fields","from,message,created_time,place");
         GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/1426285350749606/feed", parameters, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
@@ -323,6 +338,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshListener.onRefresh();
+            }
+        });
+
         ApplicationConnectivity.getmInstance().setConnectivityListener(this);
     }
 }
