@@ -21,7 +21,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:gravity="center_vertical"
         android:text="Example application"
         style="@android:style/TextAppearance.DeviceDefault.Small"
         android:layout_alignParentStart="true"
@@ -30,6 +29,7 @@
 
     <TextView
         style="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textColor="@android:color/holo_red_light"
         android:id="@+id/tvpostid"
         android:layout_width="fill_parent"
         android:layout_height="26dip"
