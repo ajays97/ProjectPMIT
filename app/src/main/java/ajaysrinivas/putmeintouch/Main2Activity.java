@@ -4,10 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class Main2Activity extends AppCompatActivity {
 
-    FeedAdapter adapter;
-    Post[] feed;
+    FeedAdapter feedAdapter;
+    ArrayList<Post> feed;
     ListView listView;
 
     @Override
@@ -17,16 +19,16 @@ public class Main2Activity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listview);
 
-        feed = new Post[5];
-        feed[0] = new Post("First Description", "Ajay Srinivas", "11111");
-        feed[1] = new Post("Second Description", "Vijay", "22222");
-        feed[2] = new Post("Third Description", "Abhishek", "33333");
-        feed[3] = new Post("Fourth Description", "Ajay ", "44444");
-        feed[4] = new Post("Fifth Description", "Mansoor", "55555");
+        feed = new ArrayList<Post>();
+        feed.add(new Post("First Description", "Ajay Srinivas", "11111"));
+        feed.add(new Post("Second Description", "Vijay", "22222"));
+        feed.add(new Post("Third Description", "Abhishek", "33333"));
 
-        adapter = new FeedAdapter(getApplicationContext(), feed);
+        feedAdapter = new FeedAdapter(getApplicationContext(), feed);
+        listView.setAdapter(feedAdapter);
 
-        listView.setAdapter(adapter);
+        feedAdapter.add(new Post("Fourth Description", "New Name", "44444"));
+        feedAdapter.notifyDataSetChanged();
 
     }
 }

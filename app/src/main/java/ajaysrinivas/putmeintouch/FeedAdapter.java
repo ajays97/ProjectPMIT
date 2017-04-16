@@ -11,15 +11,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ajay Srinivas on 4/14/2017.
  */
 
 public class FeedAdapter extends ArrayAdapter<Post> {
 
-    Post[] feed = null;
+    ArrayList<Post> feed = null;
 
-    public FeedAdapter(@NonNull Context context, Post[] feed) {
+    public FeedAdapter(@NonNull Context context, ArrayList<Post> feed) {
         super(context, R.layout.feed_row, feed);
         this.feed = feed;
     }
@@ -31,7 +33,7 @@ public class FeedAdapter extends ArrayAdapter<Post> {
         LayoutInflater feedInflater = LayoutInflater.from(getContext());
         View customView = feedInflater.inflate(R.layout.feed_row, parent, false);
 
-        Post post = feed[position];
+        Post post = feed.get(position);
 
         TextView feed_description = (TextView) customView.findViewById(R.id.tvDescription);
         TextView feed_creator = (TextView) customView.findViewById(R.id.tvcreator);

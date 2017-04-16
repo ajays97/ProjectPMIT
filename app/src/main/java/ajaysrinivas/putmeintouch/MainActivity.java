@@ -51,13 +51,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
-
+    FeedAdapter feedAdapter;
+    ArrayList<Post> feed;
 
     ListView feedList;
     String feeds = "";
     String resp = null;
-    ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> feedsList;
+    ArrayList<Post> feedsList;
     GraphResponse lastResponse = null;
     View ftView;
     SwipeRefreshLayout refreshLayout;
@@ -179,11 +179,13 @@ public class MainActivity extends AppCompatActivity
                                     JSONObject mainObj = graphResponse.getJSONObject();
                                     try {
                                         JSONArray jsonArray = mainObj.getJSONArray("data");
+
                                         for (int i = 0; i < 15; i++) {
                                             JSONObject respObj = jsonArray.getJSONObject(i);
-                                            arrayAdapter.add(respObj.getString("message") + "\n " + respObj.getString("id"));
+                                            JSONObject fromObj = respObj.getJSONObject("from");
+                                            feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
                                         }
-                                        arrayAdapter.notifyDataSetChanged();
+                                        feedAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
                                         Toast.makeText(getApplicationContext(), "NO MORE FEED", Toast.LENGTH_SHORT).show();
                                     }
@@ -204,9 +206,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateFeed() {
-        feedsList = new ArrayList<String>();
-        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.listitem1, feedsList);
-        feedList.setAdapter(arrayAdapter);
+        feedsList = new ArrayList<Post>();
+        feedAdapter = new FeedAdapter(getApplicationContext(), feedsList);
+        feedList.setAdapter(feedAdapter);
 
         Bundle parameters = new Bundle();
         parameters.putString("limit", "15");
@@ -220,9 +222,10 @@ public class MainActivity extends AppCompatActivity
                     JSONArray jsonArray = mainObj.getJSONArray("data");
                     for (int i = 0; i < 15; i++) {
                         JSONObject respObj = jsonArray.getJSONObject(i);
-                        arrayAdapter.add(respObj.getString("message") + "\n " + respObj.getString("id"));
+                        JSONObject fromObj = respObj.getJSONObject("from");
+                        feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
                     }
-                    arrayAdapter.notifyDataSetChanged();
+                    feedAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
