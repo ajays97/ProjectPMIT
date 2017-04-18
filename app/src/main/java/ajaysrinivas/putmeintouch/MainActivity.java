@@ -131,17 +131,20 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                String temp = feedList.getItemAtPosition(position).toString();
-                StringBuilder builder = new StringBuilder();
-                builder.append(temp);
-                builder.reverse();
-                temp = builder.toString().split("\n")[0];
-                builder = new StringBuilder();
-                builder.append(temp);
-                temp = builder.reverse().toString();
+                Post post = (Post) adapterView.getItemAtPosition(position);
+
+
+                String post_id = post.post_id;
+//                StringBuilder builder = new StringBuilder();
+//                builder.append(temp);
+//                builder.reverse();
+//                temp = builder.toString().split("\n")[0];
+//                builder = new StringBuilder();
+//                builder.append(temp);
+//                temp = builder.reverse().toString();
 
                 Intent i = new Intent(MainActivity.this, FeedActivity.class);
-                i.putExtra(Intent.EXTRA_TEXT, temp);
+                i.putExtra(Intent.EXTRA_TEXT, post_id);
                 startActivity(i);
             }
         });
@@ -212,7 +215,7 @@ public class MainActivity extends AppCompatActivity
 
         Bundle parameters = new Bundle();
         parameters.putString("limit", "15");
-        parameters.putString("fields","from,message,created_time,place");
+        parameters.putString("fields", "from,message,created_time,place");
         GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/1426285350749606/feed", parameters, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
@@ -304,8 +307,6 @@ public class MainActivity extends AppCompatActivity
             lastResponse = null;
             updateFeed();
             progressDialog.dismiss();
-        }else if(id == R.id.mMainActivity2){
-            startActivity(new Intent(MainActivity.this, Main2Activity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -333,6 +334,8 @@ public class MainActivity extends AppCompatActivity
             LoginManager.getInstance().logOut();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+        } else if (id == R.id.nav_profile) {
+            startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

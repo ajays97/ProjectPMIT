@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Main Activity 2"
-        android:id="@+id/mMainActivity2"></item>
 
-    <item android:title="Refresh"
-        android:id="@+id/mRefresh"></item>
+    <item
+        android:id="@+id/mRefresh"
+        android:title="Refresh"></item>
 
-    <item android:title="Logout"
-        android:id="@+id/mLogout"></item>
+    <item
+        android:id="@+id/mLogout"
+        android:title="Logout"></item>
 
 </menu>

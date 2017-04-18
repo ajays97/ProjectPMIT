@@ -51,7 +51,8 @@
         </receiver>
 
         <activity android:name=".FeedActivity" />
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".UserProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
