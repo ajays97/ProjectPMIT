@@ -36,6 +36,9 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     FeedAdapter feedAdapter;
     ArrayList<Post> feed;
 
+    private AdView adView;
+
     ListView feedList;
     String feeds = "";
     String resp = null;
@@ -67,8 +72,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2819514375619003~3765371970");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        adView = (AdView) findViewById(R.id.mainAdView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
 /*
 
         PostIdHelper db = new PostIdHelper(this);
