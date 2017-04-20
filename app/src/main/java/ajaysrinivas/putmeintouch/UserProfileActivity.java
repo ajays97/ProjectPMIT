@@ -24,6 +24,8 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
+
+    AdView adView;
 
     ArrayList<Post> postsList;
     ListView postList;
@@ -64,6 +68,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
         postList = (ListView) findViewById(R.id.postsList);
         postList.setNestedScrollingEnabled(true);
+
+        adView = (AdView) findViewById(R.id.useradView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         postList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
