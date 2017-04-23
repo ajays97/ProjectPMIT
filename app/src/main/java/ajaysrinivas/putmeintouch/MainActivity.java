@@ -194,6 +194,7 @@ public class MainActivity extends AppCompatActivity
                                         for (int i = 0; i < 15; i++) {
                                             JSONObject respObj = jsonArray.getJSONObject(i);
                                             JSONObject fromObj = respObj.getJSONObject("from");
+                                            String photoUrl = fromObj.getString("id");
                                             feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
                                         }
                                         feedAdapter.notifyDataSetChanged();
@@ -221,6 +222,7 @@ public class MainActivity extends AppCompatActivity
         feedAdapter = new FeedAdapter(getApplicationContext(), feedsList);
         feedList.setAdapter(feedAdapter);
 
+        //To fetch Feed Data
         Bundle parameters = new Bundle();
         parameters.putString("limit", "15");
         parameters.putString("fields", "from,message,created_time,place");
@@ -248,6 +250,7 @@ public class MainActivity extends AppCompatActivity
         });
         request.setParameters(parameters);
         request.executeAsync();
+
     }
 
     private void showConnectivity(boolean isConnected) {
@@ -354,14 +357,5 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-
-        refreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                refreshListener.onRefresh();
-            }
-        });
-
-        ApplicationConnectivity.getmInstance().setConnectivityListener(this);
     }
 }

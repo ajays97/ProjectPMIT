@@ -98,6 +98,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                         for (int i = 0; i < 15; i++) {
                                             JSONObject respObj = jsonArray.getJSONObject(i);
                                             JSONObject fromObj = respObj.getJSONObject("from");
+                                            String photoUrl = fromObj.getString("id");
                                             if (fromObj.getString("id").equals(Profile.getCurrentProfile().getId()))
                                                 postAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
                                         }
@@ -176,6 +177,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         Log.d("Output: ", mainObj.toString());
                         JSONObject respObj = jsonArray.getJSONObject(i);
                         JSONObject fromObj = respObj.getJSONObject("from");
+                        String photoUrl = fromObj.getString("id");
                         if (fromObj.getString("id").equals(Profile.getCurrentProfile().getId()))
                             postAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
                     }

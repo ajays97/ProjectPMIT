@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.facebook.login.widget.ProfilePictureView;
+
 import java.util.ArrayList;
 
 /**

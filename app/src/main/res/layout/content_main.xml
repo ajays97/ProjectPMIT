@@ -10,11 +10,13 @@
     tools:context="ajaysrinivas.putmeintouch.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <ListView
-        android:id="@+id/feedList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimaryDark"></ListView>
+        <ListView
+            android:background="@android:color/white"
+            android:id="@+id/feedList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="7.0sp" />
 
 </android.support.v4.widget.SwipeRefreshLayout>
