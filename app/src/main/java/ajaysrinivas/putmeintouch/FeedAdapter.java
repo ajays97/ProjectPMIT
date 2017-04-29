@@ -4,14 +4,18 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.ads.NativeExpressAdView;
+import com.google.android.gms.ads.formats.NativeCustomTemplateAd;
 
 import java.util.ArrayList;
 
@@ -20,6 +24,8 @@ import java.util.ArrayList;
  */
 
 public class FeedAdapter extends ArrayAdapter<Post> {
+
+    private static final int AD_VIEW_TYPE = 1;
 
     ArrayList<Post> feed = null;
 
@@ -31,6 +37,7 @@ public class FeedAdapter extends ArrayAdapter<Post> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
 
         LayoutInflater feedInflater = LayoutInflater.from(getContext());
         View customView = feedInflater.inflate(R.layout.feed_row, parent, false);
@@ -46,6 +53,7 @@ public class FeedAdapter extends ArrayAdapter<Post> {
         feed_postid.setText(post.post_id);
 
         return customView;
-
     }
+
 }
+

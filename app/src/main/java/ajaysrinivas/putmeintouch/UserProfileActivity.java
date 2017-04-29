@@ -1,6 +1,7 @@
 package ajaysrinivas.putmeintouch;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,7 +26,9 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +38,7 @@ import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
 
-    AdView adView;
+    private AdView mAdView;
 
     ArrayList<Post> postsList;
     ListView postList;
@@ -47,11 +50,20 @@ public class UserProfileActivity extends AppCompatActivity {
     ProfilePictureView pictureView;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.profile_toolbar);
         setSupportActionBar(toolbar);
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-2819514375619003~3765371970");
+
         pictureView = (ProfilePictureView) findViewById(R.id.pictureView);
         pictureView.setPresetSize(ProfilePictureView.CUSTOM);
 
@@ -68,10 +80,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
         postList = (ListView) findViewById(R.id.postsList);
         postList.setNestedScrollingEnabled(true);
-
-        adView = (AdView) findViewById(R.id.useradView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
 
         postList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -131,6 +139,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
         updatefeed();
 
+       /* mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);*/
+
     }
 
     private void dynamicToolbarColor() {
@@ -174,7 +186,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 try {
                     JSONArray jsonArray = mainObj.getJSONArray("data");
                     for (int i = 0; i < 15; i++) {
-                        Log.d("Output: ", mainObj.toString());
                         JSONObject respObj = jsonArray.getJSONObject(i);
                         JSONObject fromObj = respObj.getJSONObject("from");
                         String photoUrl = fromObj.getString("id");

@@ -42,6 +42,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,11 +59,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ConnectivityReceiver.ConnectivityReceiverListener {
 
     FeedAdapter feedAdapter;
-    ArrayList<Post> feed;
 
     ListView feedList;
-    String feeds = "";
-    String resp = null;
+
     ArrayList<Post> feedsList;
     GraphResponse lastResponse = null;
     View ftView;
@@ -76,6 +75,8 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 /*
 
@@ -236,6 +237,7 @@ public class MainActivity extends AppCompatActivity
                     for (int i = 0; i < 15; i++) {
                         JSONObject respObj = jsonArray.getJSONObject(i);
                         JSONObject fromObj = respObj.getJSONObject("from");
+                        String photoUrl = fromObj.getString("id");
                         feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
                     }
                     feedAdapter.notifyDataSetChanged();
@@ -329,19 +331,20 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        } else if (id == R.id.nav_logout) {
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        } else
+        if (id == R.id.nav_logout) {
             LoginManager.getInstance().logOut();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();

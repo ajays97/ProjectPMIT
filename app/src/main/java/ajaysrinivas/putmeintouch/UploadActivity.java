@@ -52,7 +52,7 @@ public class UploadActivity extends AppCompatActivity {
             GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/1426285350749606/feed", parameters, HttpMethod.POST, new GraphRequest.Callback() {
                 @Override
                 public void onCompleted(GraphResponse response) {
-                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG).show();
                 }
             });
             request.executeAsync();
@@ -64,7 +64,7 @@ public class UploadActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
-            Toast.makeText(getApplicationContext(), "Successfully Posted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "Successfully Posted", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(UploadActivity.this, MainActivity.class));
             finish();
         }

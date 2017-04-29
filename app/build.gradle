@@ -7,8 +7,8 @@ android {
         applicationId "ajaysrinivas.putmeintouch"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.55"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -33,7 +33,8 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support:palette-v7:22.2.0'
-    compile 'com.google.firebase:firebase-ads:10.0.1'
+    compile 'com.google.firebase:firebase-ads:10.2.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
     testCompile 'junit:junit:4.12'
 }
 
