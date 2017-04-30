@@ -1,9 +1,12 @@
 package ajaysrinivas.putmeintouch;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.util.LruCache;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -29,9 +32,23 @@ public class FeedAdapter extends ArrayAdapter<Post> {
 
     ArrayList<Post> feed = null;
 
+    private LruCache<String, Bitmap> mCache;
+
     public FeedAdapter(@NonNull Context context, ArrayList<Post> feed) {
         super(context, R.layout.feed_row, feed);
         this.feed = feed;
+
+        final int MAX_MEMORY = (int) (Runtime.getRuntime().maxMemory() / 1024);
+        final int CACHE_SIZE = MAX_MEMORY / 8;
+
+        mCache = new LruCache<String, Bitmap>(CACHE_SIZE) {
+
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                return bitmap.getByteCount();
+            }
+        };
+
     }
 
     @NonNull
@@ -52,7 +69,16 @@ public class FeedAdapter extends ArrayAdapter<Post> {
         feed_creator.setText(post.creator);
         feed_postid.setText(post.post_id);
 
+        ProfilePictureView pictureView = (ProfilePictureView) customView.findViewById(R.id.profilePic);
+        pictureView.setProfileId(post.photo_url);
+
         return customView;
+    }
+
+    public class ImageCacher extends AsyncTask<String, Void, Bitmap> {
+
+
+
     }
 
 }

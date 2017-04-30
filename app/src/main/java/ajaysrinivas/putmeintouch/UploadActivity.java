@@ -80,6 +80,12 @@ public class UploadActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(UploadActivity.this, MainActivity.class));
         finish();
     }
 }

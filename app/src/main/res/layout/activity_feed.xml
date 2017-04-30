@@ -5,37 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@color/colorPrimary">
-
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            style="@android:style/TextAppearance.DeviceDefault.Large"
-            android:id="@+id/feed_comment"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:minHeight="60dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/feed_comment"
+                style="@android:style/TextAppearance.DeviceDefault.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:minHeight="60dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/colorPrimary" />
 
-        <ListView
-            android:id="@+id/commentslist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <ListView
+                android:id="@+id/commentslist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-    </ScrollView>
-
 
 </android.support.design.widget.CoordinatorLayout>

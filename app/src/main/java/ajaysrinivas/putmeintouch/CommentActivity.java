@@ -3,8 +3,10 @@ package ajaysrinivas.putmeintouch;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -26,6 +28,9 @@ public class CommentActivity extends AppCompatActivity {
 
         etComment = (EditText) findViewById(R.id.editComment);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         Intent i = getIntent();
         id = i.getStringExtra(Intent.EXTRA_TEXT);
 
@@ -43,14 +48,36 @@ public class CommentActivity extends AppCompatActivity {
                 GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + id + "/comments", parameters, HttpMethod.POST, new GraphRequest.Callback() {
                     @Override
                     public void onCompleted(GraphResponse response) {
-                        pd.dismiss();
                     }
                 });
 
                 request.executeAsync();
+                pd.dismiss();
+                Intent i = new Intent(CommentActivity.this, FeedActivity.class);
+                i.putExtra(Intent.EXTRA_TEXT, id);
+                startActivity(i);
                 finish();
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(CommentActivity.this, FeedActivity.class);
+        i.putExtra(Intent.EXTRA_TEXT, id);
+        startActivity(i);
+        finish();
     }
 }

@@ -8,11 +8,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +38,7 @@ public class FeedActivity extends AppCompatActivity {
 
     ArrayList<Post> commentsList;
     ListView commentList;
-    FeedAdapter commentAdapter;
+    CommentAdapter commentAdapter;
 
     GraphResponse lastResponse = null;
 
@@ -55,7 +58,6 @@ public class FeedActivity extends AppCompatActivity {
 
         tPost = (TextView) findViewById(R.id.feed_comment);
         pd = new ProgressDialog(this);
-
 
         commentList = (ListView) findViewById(R.id.commentslist);
 
@@ -86,7 +88,7 @@ public class FeedActivity extends AppCompatActivity {
                                         for (int i = 0; i < 15; i++) {
                                             JSONObject respObj = jsonArray.getJSONObject(i);
                                             JSONObject fromObj = respObj.getJSONObject("from");
-                                            commentAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
+                                            commentAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id"), fromObj.getString("id")));
                                         }
                                         commentAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
@@ -114,6 +116,9 @@ public class FeedActivity extends AppCompatActivity {
                     pd.dismiss();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (NullPointerException e) {
+                    tPost.setText("Oops! App is Offline... Turn the connectivity on.");
+                    pd.dismiss();
                 }
             }
         });
@@ -127,13 +132,14 @@ public class FeedActivity extends AppCompatActivity {
     public void updateComments() {
 
         commentsList = new ArrayList<Post>();
-        commentAdapter = new FeedAdapter(getApplicationContext(), commentsList);
+        commentAdapter = new CommentAdapter(getApplicationContext(), commentsList);
         commentList.setAdapter(commentAdapter);
 
         Bundle parameters = new Bundle();
         parameters.putString("limit", "10");
+        parameters.putString("order", "reverse_chronological");
 
-        GraphRequest graphRequest = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + status + "/comments", null, HttpMethod.GET, new GraphRequest.Callback() {
+        GraphRequest graphRequest = new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + status + "/comments", parameters, HttpMethod.GET, new GraphRequest.Callback() {
             @Override
             public void onCompleted(GraphResponse response) {
                 JSONObject jsonObject = response.getJSONObject();
@@ -142,17 +148,16 @@ public class FeedActivity extends AppCompatActivity {
                     for (int i = 0; i < 10; i++) {
                         JSONObject respObj = commArray.getJSONObject(i);
                         JSONObject fromObj = respObj.getJSONObject("from");
-                        commentAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
+                        commentAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id"), fromObj.getString("id")));
                     }
                     commentAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (NullPointerException e) {
+                    tPost.setText("Oops! App is Offline... Turn the connectivity on.");
                 }
-
-                Log.d("Output", jsonObject.toString());
             }
         });
-
         graphRequest.executeAsync();
     }
 
@@ -169,6 +174,9 @@ public class FeedActivity extends AppCompatActivity {
             Intent i = new Intent(FeedActivity.this, CommentActivity.class);
             i.putExtra(Intent.EXTRA_TEXT, status);
             startActivity(i);
+            finish();
+        } else if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);

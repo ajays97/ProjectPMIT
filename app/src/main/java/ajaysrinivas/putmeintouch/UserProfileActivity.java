@@ -108,7 +108,7 @@ public class UserProfileActivity extends AppCompatActivity {
                                             JSONObject fromObj = respObj.getJSONObject("from");
                                             String photoUrl = fromObj.getString("id");
                                             if (fromObj.getString("id").equals(Profile.getCurrentProfile().getId()))
-                                                postAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
+                                                postAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id"), fromObj.getString("id")));
                                         }
                                         postAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
@@ -139,9 +139,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         updatefeed();
 
-       /* mAdView = (AdView) findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);*/
+        mAdView.loadAd(adRequest);
 
     }
 
@@ -190,7 +190,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         JSONObject fromObj = respObj.getJSONObject("from");
                         String photoUrl = fromObj.getString("id");
                         if (fromObj.getString("id").equals(Profile.getCurrentProfile().getId()))
-                            postAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
+                            postAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id"), fromObj.getString("id")));
                     }
                     postAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {

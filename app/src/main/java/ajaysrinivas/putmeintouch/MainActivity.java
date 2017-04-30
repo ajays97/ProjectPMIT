@@ -1,5 +1,6 @@
 package ajaysrinivas.putmeintouch;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -47,6 +50,7 @@ import com.google.android.gms.ads.NativeExpressAdView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -68,6 +72,8 @@ public class MainActivity extends AppCompatActivity
     SwipeRefreshLayout refreshLayout;
     SwipeRefreshLayout.OnRefreshListener refreshListener;
 
+    TextView offline;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +81,6 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
 /*
 
@@ -94,6 +98,8 @@ public class MainActivity extends AppCompatActivity
 */
 
         feedList = (ListView) findViewById(R.id.feedList);
+
+        offline = (TextView) findViewById(R.id.offline);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -196,11 +202,13 @@ public class MainActivity extends AppCompatActivity
                                             JSONObject respObj = jsonArray.getJSONObject(i);
                                             JSONObject fromObj = respObj.getJSONObject("from");
                                             String photoUrl = fromObj.getString("id");
-                                            feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
+                                            feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id"), fromObj.getString("id")));
                                         }
                                         feedAdapter.notifyDataSetChanged();
                                     } catch (JSONException e) {
                                         Toast.makeText(getApplicationContext(), "NO MORE FEED", Toast.LENGTH_SHORT).show();
+                                    } catch (NullPointerException e) {
+                                        Toast.makeText(getApplicationContext(), "Please connect to internet", Toast.LENGTH_SHORT).show();
                                     }
 //                                    feedList.removeFooterView(ftView);
                                 }
@@ -212,7 +220,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-
 
         updateFeed();
 
@@ -238,14 +245,13 @@ public class MainActivity extends AppCompatActivity
                         JSONObject respObj = jsonArray.getJSONObject(i);
                         JSONObject fromObj = respObj.getJSONObject("from");
                         String photoUrl = fromObj.getString("id");
-                        feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id")));
+                        feedAdapter.add(new Post(respObj.getString("message"), fromObj.getString("name"), respObj.getString("id"), fromObj.getString("id")));
                     }
                     feedAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
                     Toast.makeText(getApplicationContext(), "Please connect to internet", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
 
             }
