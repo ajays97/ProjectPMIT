@@ -1,4 +1,4 @@
-package ajaysrinivas.putmeintouch;
+package ajaysrinivas.putmeintouch.adapter;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import ajaysrinivas.putmeintouch.Post;
+import ajaysrinivas.putmeintouch.R;
 
 /**
  * Created by Ajay Srinivas on 4/30/2017.

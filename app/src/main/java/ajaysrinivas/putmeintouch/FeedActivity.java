@@ -1,21 +1,18 @@
 package ajaysrinivas.putmeintouch;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ajaysrinivas.putmeintouch.adapter.CommentAdapter;
 
 public class FeedActivity extends AppCompatActivity {
 
@@ -56,10 +55,14 @@ public class FeedActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        tPost = (TextView) findViewById(R.id.feed_comment);
         pd = new ProgressDialog(this);
 
         commentList = (ListView) findViewById(R.id.commentslist);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View commentHeader = inflater.inflate(R.layout.comment_header, null);
+        tPost = (TextView) commentHeader.findViewById(R.id.feed_comment);
+        commentList.addHeaderView(commentHeader);
 
         Intent intent = getIntent();
         status = intent.getStringExtra(Intent.EXTRA_TEXT);
@@ -117,7 +120,6 @@ public class FeedActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (NullPointerException e) {
-                    tPost.setText("Oops! App is Offline... Turn the connectivity on.");
                     pd.dismiss();
                 }
             }

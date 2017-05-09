@@ -1,7 +1,5 @@
 package ajaysrinivas.putmeintouch;
 
-import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AbsListView;
@@ -26,7 +23,6 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
@@ -35,6 +31,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ajaysrinivas.putmeintouch.adapter.FeedAdapter;
 
 public class UserProfileActivity extends AppCompatActivity {
 
